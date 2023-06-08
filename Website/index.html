@@ -1,0 +1,51 @@
+<html>
+    <head>
+        <title> Attendance </title>
+    </head>
+
+    <body>
+
+      <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.22.1/firebase-database.js";
+      
+        const firebaseConfig = {
+          apiKey: "AIzaSyDBcOsMYrOv5nb0GMszO_ZIYN7p-9fsKkQ",
+              authDomain: "iotca-project.firebaseapp.com",
+              databaseURL: "https://iotca-project-default-rtdb.firebaseio.com",
+              projectId: "iotca-project",
+              storageBucket: "iotca-project.appspot.com",
+              messagingSenderId: "302345366119",
+              appId: "1:302345366119:web:eaac0c7a69098cd46502c2",
+              measurementId: "G-LRDCX2LNJ2"
+        };
+      
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const dataContainer = document.getElementById("dataContainer");
+      
+        // Retrieve data from the database
+        const dataRef = ref(database, "your-data-path");
+        onValue(dataRef, (snapshot) => {
+          const data = snapshot.val();
+          if (data) {
+            // Clear previous data
+            dataContainer.innerHTML = "";
+      
+            // Iterate over each entry in the data
+            for (const id in data) {
+              if (Object.hasOwnProperty.call(data, id)) {
+                const entry = data[id];
+                const entryElement = document.createElement("div");
+                entryElement.innerHTML = `<p>id: ${id}</p><p>text: ${entry.text}</p>`;
+                dataContainer.appendChild(entryElement);
+              }
+            }
+          }
+        });
+      </script>
+
+    </body>
+</html>
+
+
